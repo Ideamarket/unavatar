@@ -12,6 +12,7 @@ const providers = {
   gitlab: require('./gitlab'),
   gravatar: require('./gravatar'),
   instagram: require('./instagram'),
+  mirror: require('./mirror'),
   reddit: require('./reddit'),
   soundcloud: require('./soundcloud'),
   substack: require('./substack'),
