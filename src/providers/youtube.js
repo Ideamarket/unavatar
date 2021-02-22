@@ -1,27 +1,19 @@
 'use strict'
 
-const { stringify } = require('querystring')
-const { isNil, get } = require('lodash')
 const pAny = require('p-any')
+const cheerio = require('cheerio')
 const got = require('got')
 
-const { YOUTUBE_API_KEY } = require('../constant')
-
 const getAvatarUrl = async (username, bySlugProp) => {
-  const apiUrl = `https://content.googleapis.com/youtube/v3/channels?${stringify({
-    part: 'id,snippet',
-    [bySlugProp]: username,
-    key: YOUTUBE_API_KEY
-  })}`
-
-  const { body } = await got(apiUrl, { responseType: 'json' })
-  const avatarUrl = get(body, 'items[0].snippet.thumbnails.medium.url')
-
-  if (isNil(avatarUrl)) {
-    throw new Error(`YouTube avatar not detected for '${bySlugProp}'`)
+  if (bySlugProp === 'id') {
+    throw 'id not supported'
   }
 
-  return avatarUrl
+  const { body } = await got(`https://www.youtube.com/c/${username}`)
+  const $ = cheerio.load(body)
+  return $('link[itemprop=thumbnailUrl]')
+    .attr('href')
+    .replace('s900', 's200')
 }
 
 module.exports = async username =>
