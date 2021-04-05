@@ -4,9 +4,13 @@ const cheerio = require('cheerio')
 const got = require('got')
 
 module.exports = async username => {
-  const { body } = await got(`https://${username}.substack.com`)
+  const { body } = await got(`https://tryshowtime.com/${username}`)
   const $ = cheerio.load(body)
-  return $('link[rel=apple-touch-icon][sizes=120x120]').attr('href')
+  const res = $('meta[property="og:image"]').attr('content')
+  if (res.includes('home_og_card')) {
+    throw new Error('not found')
+  }
+  return res
 }
 
 module.exports.supported = {

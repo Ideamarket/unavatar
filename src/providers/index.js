@@ -14,6 +14,7 @@ const providers = {
   instagram: require('./instagram'),
   mirror: require('./mirror'),
   reddit: require('./reddit'),
+  showtime: require('./showtime'),
   soundcloud: require('./soundcloud'),
   substack: require('./substack'),
   telegram: require('./telegram'),
