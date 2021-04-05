@@ -6,11 +6,12 @@ const got = require('got')
 module.exports = async username => {
   const { body } = await got(`https://tryshowtime.com/${username}`)
   const $ = cheerio.load(body)
-  const res = $('meta[property="og:image"]').attr('content')
-  if (res.includes('home_og_card')) {
+  const res = JSON.parse($('script[id="__NEXT_DATA__"]').html())
+  if (!res || !res.props || !res.props.pageProps || !res.props.pageProps.img_url) {
     throw new Error('not found')
   }
-  return res
+
+  return res.props.pageProps.img_url
 }
 
 module.exports.supported = {
